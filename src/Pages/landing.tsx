@@ -3,20 +3,10 @@ import { Col, Container, Row } from 'react-bootstrap'
 
 export default function Landing() {
   return (
-    <Container fluid className="no-gutters mx-0 px-0">
-    <Row noGutters={true} style={{backgroundColor: "#343a40", height: "50rem" }}>
+    <Container fluid className='p-0 m-0' style={{backgroundColor: "#00C3FF", width: "100%", height: "100%" }}>
+    <Row style={{backgroundColor: "#00C3FF", width: "100%", height: "100%" }}>
         <Col>
-        
-        </Col>
-    </Row>
-    <Row style={{backgroundColor: "#6c757d", height: "50rem" }}>
-        <Col>
-        
-        </Col>
-    </Row>
-    <Row style={{backgroundColor: "#343a40", height: "50rem" }}>
-        <Col>
-        
+        <h1>hello</h1>
         </Col>
     </Row>
     </Container>
