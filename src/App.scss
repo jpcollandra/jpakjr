@@ -1,9 +1,7 @@
-$backgrounfColor: #00C3FF;
+$backgroundColor: #00C3FF;
 
 .App {
-  background-color: $backgrounfColor;
+  background-color: $backgroundColor;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
-  height: 100vh;
-  width: 100vw;
 }

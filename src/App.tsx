@@ -1,7 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import Landing from './Pages/landing';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

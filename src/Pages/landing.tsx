@@ -1,14 +1,28 @@
-import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import React from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export default function Landing() {
   return (
-    <Container fluid className='p-0 m-0' style={{backgroundColor: "#00C3FF", width: "100%", height: "100%" }}>
-    <Row style={{backgroundColor: "#00C3FF", width: "100%", height: "100%" }}>
-        <Col>
-        <h1>hello</h1>
-        </Col>
-    </Row>
-    </Container>
-  )
+    <>
+      <Container
+        fluid
+        className="p-0"
+        style={{
+          display: "flex",
+          height: "100vh",
+          margin: "0",
+          padding: "0",
+          width: "100%",
+        }}
+      >
+        <Row style={{ height: "auto" }}>
+          <Col>
+            <h1>hello</h1>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
 }
