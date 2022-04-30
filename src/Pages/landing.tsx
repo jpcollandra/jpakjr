@@ -19,7 +19,10 @@ export default function Landing() {
       >
         <Row style={{ height: "auto" }}>
           <Col>
-            <h1>hello</h1>
+            <div style={{position: "relative" , margin: "30%", width: "40rem"}}>
+            <h2>"If it can be designed I can</h2>
+            <h2>code it"</h2>
+            </div>
           </Col>
         </Row>
       </Container>

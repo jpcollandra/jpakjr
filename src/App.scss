@@ -1,7 +1,9 @@
 $backgroundColor: #00C3FF;
+$textColor: #FFFFFF;
 
 .App {
   background-color: $backgroundColor;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
+  color: $textColor;
 }
