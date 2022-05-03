@@ -20,20 +20,45 @@ export default function Landing() {
           width: "100%",
         }}
       >
-        <Row >
+        <Row>
           <Col>
+              <div
+                style={{
+                  position: "relative",
+                  marginTop: "20%",
+                  marginLeft: "20%",
+                  width: "40rem",
+                }}
+              >
+                <h2>"If it can be designed I can</h2>
+                <h2>code it"</h2>
+              </div>
             <motion.div
-              animate={{ x: 100 }}
-              transition={{ ease: "easeOut", duration: 2 }}
+              animate={{ y: 100 }}
+              transition={{
+                type: "spring",
+                duration: 10,
+                damping: 1,
+                stiffness: 5,
+              }}
             >
-            <div
-              style={{ position: "relative", marginTop: "20%", width: "40rem" }}
-            >
-              <h2>"If it can be designed I can</h2>
-              <h2>code it"</h2>
-            </div>
+              <img
+                src="/assets/jpakjrFig.png"
+                style={{
+                  display: "flex",
+                  width: "20rem",
+                  marginLeft: "110%",
+                }}
+                alt="me"
+              />
             </motion.div>
-            <button className="buttonNeomorphic" style={{margin: "10%"}}> Start </button>
+            <button
+              className="buttonNeomorphic"
+              style={{ marginTop: "5%", marginLeft: "20%" }}
+            >
+              {" "}
+              Start{" "}
+            </button>
           </Col>
         </Row>
       </Container>
