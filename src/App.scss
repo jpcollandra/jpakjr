@@ -15,8 +15,8 @@ $textColor: #ffffff;
   height: 40px;
   width: 100px;
   -webkit-appearance: button;
-  box-shadow: -10px -10px 15px $backgroundColor2,
-    10px 10px 15px rgba(70, 70, 70, 0.12);
+  box-shadow:  5px 5px 11px #00b1e8,
+  -5px -5px 11px #00d5ff;
   position: absolute;
   border-radius: 20%;
   border: 1px solid $backgroundColor;
@@ -25,8 +25,7 @@ $textColor: #ffffff;
 }
 
 .buttonNeomorphic:hover {
-  box-shadow: -10px -10px 15px $backgroundColor2,
-    10px 10px 15px rgba(70, 70, 70, 0.12),
-  inset -10px -10px 15px $backgroundColor2,
-  inset 10px 10px 15px rgba(70, 70, 70, 0.12);
+  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+  box-shadow:  5px 5px 11px #00b1e8,
+             -5px -5px 11px #00d5ff;
 }
