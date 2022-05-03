@@ -1,9 +1,32 @@
-$backgroundColor: #00C3FF;
-$textColor: #FFFFFF;
+$backgroundColor: #00c3ff;
+$backgroundColor2: #33CFFF;
+$textColor: #ffffff;
 
 .App {
   background-color: $backgroundColor;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 100;
   color: $textColor;
+}
+
+.buttonNeomorphic {
+  background-color: $backgroundColor;
+  color: $textColor;
+  height: 40px;
+  width: 100px;
+  -webkit-appearance: button;
+  box-shadow: -10px -10px 15px $backgroundColor2,
+    10px 10px 15px rgba(70, 70, 70, 0.12);
+  position: absolute;
+  border-radius: 20%;
+  border: 1px solid $backgroundColor;
+  outline: none;
+  font-size: larger;
+}
+
+.buttonNeomorphic:hover {
+  box-shadow: -10px -10px 15px $backgroundColor2,
+    10px 10px 15px rgba(70, 70, 70, 0.12),
+  inset -10px -10px 15px $backgroundColor2,
+  inset 10px 10px 15px rgba(70, 70, 70, 0.12);
 }
