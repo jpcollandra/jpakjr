@@ -5,8 +5,16 @@ import Col from "react-bootstrap/Col";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { useLoader } from "@react-three/fiber";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
+
+  const navigate = useNavigate();
+
+  function onClick() {
+    navigate("/about");
+  }
+
   return (
     <>
       <Container
@@ -55,6 +63,7 @@ export default function Landing() {
             <button
               className="buttonNeomorphic"
               style={{ marginTop: "5%", marginLeft: "20%" }}
+              onClick={onClick}
             >
               {" "}
               Start{" "}
