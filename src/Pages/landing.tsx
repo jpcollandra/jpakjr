@@ -6,13 +6,14 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { useLoader } from "@react-three/fiber";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import '../App.scss';
 
 export default function Landing() {
 
   const navigate = useNavigate();
 
   function onClick() {
-    navigate("/about");
+    navigate("/nav");
   }
 
   return (

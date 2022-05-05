@@ -1,5 +1,5 @@
 $backgroundColor: #00c3ff;
-$backgroundColor2: #33CFFF;
+$backgroundColor2: #33cfff;
 $textColor: #ffffff;
 
 .App {
@@ -15,8 +15,7 @@ $textColor: #ffffff;
   height: 40px;
   width: 100px;
   -webkit-appearance: button;
-  box-shadow:  5px 5px 11px #00b1e8,
-  -5px -5px 11px #00d5ff;
+  box-shadow: 5px 5px 11px #00b1e8, -5px -5px 11px #00d5ff;
   position: absolute;
   border-radius: 20%;
   border: 1px solid $backgroundColor;
@@ -26,6 +25,37 @@ $textColor: #ffffff;
 
 .buttonNeomorphic:hover {
   background: linear-gradient(145deg, #00b0e6, #00d1ff);
-  box-shadow:  5px 5px 11px #00b1e8,
-             -5px -5px 11px #00d5ff;
+  box-shadow: 5px 5px 11px #00b1e8, -5px -5px 11px #00d5ff;
+}
+
+.navButton {
+  border-radius: 30%;
+  height: 80px;
+  width: 100px;
+  background: $backgroundColor;
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  border: 1px solid $backgroundColor;
+  color: $textColor;
+}
+
+.navButton:hover {
+  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+}
+  
+
+.mainNav{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;  
+  height: 100vh;
+  width: 100%;
+  padding-bottom: 5%;
+}
+
+.icon{
+  height: 45px;
+  width: 45px;
 }
