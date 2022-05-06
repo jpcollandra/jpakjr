@@ -53,12 +53,8 @@ export default function Landing() {
             >
               <img
                 src="/assets/jpakjrFig.png"
-                style={{
-                  display: "flex",
-                  width: "20rem",
-                  marginLeft: "110%",
-                }}
-                alt="me"
+                className="Avatar"
+                alt="jpakjr"
               />
             </motion.div>
             <button

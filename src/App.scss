@@ -9,6 +9,12 @@ $textColor: #ffffff;
   color: $textColor;
 }
 
+.Avatar {
+    display: flex;
+    width: 20rem;
+    margin-left: 110%
+}
+
 .buttonNeomorphic {
   background-color: $backgroundColor;
   color: $textColor;
