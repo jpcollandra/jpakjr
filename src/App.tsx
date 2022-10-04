@@ -3,8 +3,7 @@ import './App.scss';
 import Landing from './Pages/landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css';
-import { Routes, Route, Link } from "react-router-dom"
-import AboutMe from './Pages/aboutMe';
+import { Routes, Route } from "react-router-dom"
 import NavPage from './Pages/navPage';
 
 function App() {
