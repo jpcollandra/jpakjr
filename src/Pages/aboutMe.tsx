@@ -2,6 +2,7 @@ import React from "react";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
+import "../App.scss";
 
 export default function AboutMe() {
   return (
@@ -19,7 +20,7 @@ export default function AboutMe() {
       >
         <Row>
           <Col>
-            <div style={{position: "absolute", right: "30%", left: "20%", width: "600px", marginTop: "15%"}}>
+            <div style={{ paddingTop:"10vh", paddingLeft:"10vh", position:"absolute", width:"60%"}}>
               <h2>
                 <span> Hello World</span>
                 <span style={{ fontSize: "24px" }}>

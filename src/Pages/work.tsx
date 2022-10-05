@@ -6,8 +6,8 @@ import "../App.scss";
 export default function Work() {
   return (
     <Col>
-      <Row>
-        <div className="workTitle">
+      <Row className="workTitle">
+        <div>
           <h1>Projects</h1>
         </div>
       </Row>
