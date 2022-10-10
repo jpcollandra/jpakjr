@@ -8,7 +8,7 @@ import { RiContactsBookFill } from "react-icons/ri";
 import { BsStack } from "react-icons/bs";
 import "../App.scss";
 import AboutMe from "./aboutMe";
-import Work from "./work";
+import Projects from "./projects";
 import Referral from "./referral";
 import Contact from "./contact";
 
@@ -47,7 +47,7 @@ export default function NavPage() {
             {visible === "contact" ? (
               <Contact />
             ) : visible === "stack" ? (
-              <Work />
+              <Projects/>
             ) : visible === "about" ? (
               <Referral />
             ) : (
