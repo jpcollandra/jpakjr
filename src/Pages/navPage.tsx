@@ -1,87 +1,63 @@
 import React, { useState } from "react";
-import Col from "react-bootstrap/esm/Col";
-import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import { BsFillPersonFill } from "react-icons/bs";
-import { RiPagesFill } from "react-icons/ri";
-import { RiContactsBookFill } from "react-icons/ri";
-import { BsStack } from "react-icons/bs";
+import { Col, Container, Row } from "react-bootstrap";
+import { BsFillPersonFill, BsStack } from "react-icons/bs";
+import { RiPagesFill, RiContactsBookFill } from "react-icons/ri";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
 import Referral from "./referral";
 import Contact from "./contact";
 
+type VisibleComponent = "home" | "stack" | "about" | "contact";
+
 export default function NavPage() {
-  const [visible, setVisible] = useState("home");
+  const [visible, setVisible] = useState<VisibleComponent>("home");
 
-  function home() {
-    setVisible("home");
-  }
+  const changeVisible = (newVisible: VisibleComponent) => {
+    setVisible(newVisible);
+  };
 
-  function stack() {
-    setVisible("stack");
-  }
-
-  function about() {
-    setVisible("about");
-  }
-
-  function contact() {
-    setVisible("contact");
-  }
+  const renderComponent = () => {
+    switch (visible) {
+      case "contact":
+        return <Contact />;
+      case "stack":
+        return <Projects />;
+      case "about":
+        return <Referral />;
+      default:
+        return <AboutMe />;
+    }
+  };
 
   return (
     <>
       <Container
         fluid
-        className="p-0"
-        style={{
-          display: "flex",
-          height: "100vh",
-          width: "100%",
-        }}
+        className="p-0 d-flex align-items-stretch"
+        style={{ height: "100vh", width: "100%", overflow: "hidden" }}
       >
-        <Row>
-          <Col>
-            {visible === "contact" ? (
-              <Contact />
-            ) : visible === "stack" ? (
-              <Projects/>
-            ) : visible === "about" ? (
-              <Referral />
-            ) : (
-              <AboutMe />
-            )}
-          </Col>
-          <Col className="mainNav">
-            <div style={{ paddingLeft: "5%" }}>
-              <button className="navButton" onClick={home}>
-                <BsFillPersonFill className="icon" />
-              </button>
-            </div>
-
-            <div style={{ paddingLeft: "5%" }}>
-              <button className="navButton" onClick={stack}>
-                <BsStack className="icon" />
-              </button>
-            </div>
-
-            <div style={{ paddingLeft: "5%" }}>
-              <button className="navButton" onClick={about}>
-                <RiPagesFill className="icon" />
-              </button>
-            </div>
-
-            <div style={{ paddingLeft: "5%" }}>
-              <button className="navButton" onClick={contact}>
-                <RiContactsBookFill className="icon" />
-              </button>
-            </div>
-          </Col>
-          <Col></Col>
+        <Row className="flex-grow-1 m-0" style={{ overflow: "hidden" }}>
+          <Col className="d-flex">{renderComponent()}</Col>
         </Row>
       </Container>
+      <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
+        <button className="navButton" onClick={() => changeVisible("home")}>
+          <BsFillPersonFill className="icon" />
+        </button>
+
+        <button className="navButton" onClick={() => changeVisible("stack")}>
+          <BsStack className="icon" />
+        </button>
+
+        <button className="navButton" onClick={() => changeVisible("about")}>
+          <RiPagesFill className="icon" />
+        </button>
+
+        <button className="navButton" onClick={() => changeVisible("contact")}>
+          <RiContactsBookFill className="icon" />
+        </button>
+      </div>
     </>
   );
 }

@@ -51,6 +51,19 @@ $textColor: #ffffff;
   box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
   border: 1px solid $backgroundColor;
   color: $textColor;
+  transition: all 0.3s ease;
+
+  @media (max-width: 1200px) {
+    font-size: 1.25rem;
+  }
+  
+  @media (max-width: 992px) {
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
 }
 
 .navButton:hover {
@@ -89,4 +102,19 @@ $textColor: #ffffff;
   padding-left: 10vh;
   padding-top: 10vh; 
   position:"absolute";
+}
+
+.navProject {
+  border-radius: 10%;
+  height: 100px;
+  width: 200px;
+  background: $backgroundColor;
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  border: 1px solid $backgroundColor;
+  color: $textColor;
+}
+
+.navProject:hover {
+  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
 }

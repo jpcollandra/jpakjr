@@ -5,12 +5,12 @@ import "../App.scss";
 
 export default function Referral() {
   return (
-    <Col>
       <Row className="timeTitle">
         <div>
           <h1>Timeline</h1>
         </div>
+        <Col>
+        </Col>
       </Row>
-    </Col>
   )
 }
