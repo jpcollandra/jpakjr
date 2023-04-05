@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
 import { RiPagesFill, RiContactsBookFill } from "react-icons/ri";
@@ -7,16 +7,25 @@ import AboutMe from "./aboutMe";
 import Projects from "./projects";
 import Referral from "./referral";
 import Contact from "./contact";
+import { useTheme } from "../ThemeContext";
 
 type VisibleComponent = "home" | "stack" | "about" | "contact";
 
 export default function NavPage() {
   const [visible, setVisible] = useState<VisibleComponent>("home");
+  const { theme = 'light', toggleTheme = () => {} } = useTheme() ?? {};
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+    }
+  }, [theme]);
 
   const changeVisible = (newVisible: VisibleComponent) => {
     setVisible(newVisible);
   };
-
   const renderComponent = () => {
     switch (visible) {
       case "contact":
@@ -41,6 +50,18 @@ export default function NavPage() {
           <Col className="d-flex">{renderComponent()}</Col>
         </Row>
       </Container>
+      <button
+        className="toggle-theme-btn"
+        onClick={toggleTheme}
+        style={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          zIndex: 9999,
+        }}
+      >
+        Toggle Theme
+      </button>
       <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
         <button className="navButton" onClick={() => changeVisible("home")}>
           <BsFillPersonFill className="icon" />
