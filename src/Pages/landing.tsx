@@ -1,21 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { useLoader } from "@react-three/fiber";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import '../App.scss';
+import "../App.scss";
 
 export default function Landing() {
-
   const navigate = useNavigate();
+  const [spin, setSpin] = useState(false);
+
+  useEffect(() => {
+    if (spin) {
+      setTimeout(() => {
+        navigate("/nav");
+      }, 2000);
+    }
+  }, [spin, navigate]);
 
   function onClick() {
-    navigate("/nav");
+    setSpin(true);
   }
-
 
   return (
     <>
@@ -43,23 +48,22 @@ export default function Landing() {
                 stiffness: 5,
               }}
             >
-              <img
+              <motion.img
                 src="/assets/jpakjrFig.png"
                 className="Avatar"
                 alt="jpakjr"
+                animate={spin ? { rotate: 360 } : {}}
+                transition={{ duration: 2 }}
               />
             </motion.div>
             <div
               style={{
-                position: 'static',
+                position: "static",
                 top: "100%",
                 paddingLeft: "75%",
               }}
             >
-              <button
-                className="buttonNeomorphic"
-                onClick={onClick}
-              >
+              <button className="buttonNeomorphic" onClick={onClick}>
                 {" "}
                 Start{" "}
               </button>
