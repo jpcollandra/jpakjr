@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import "../App.scss";
 
+function useTypingEffect(text: string, speed: number): string {
+  const [displayedText, setDisplayedText] = useState("");
+  const indexRef = useRef(-1);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (indexRef.current < text.length - 1) {
+        indexRef.current++;
+        setDisplayedText((prevText) => prevText + text[indexRef.current]);
+      } else {
+        clearInterval(timer);
+      }
+    }, speed);
+    return () => clearInterval(timer);
+  }, [text, speed]);
+
+  return displayedText;
+}
+
 export default function AboutMe() {
+  const typingSpeed = 100; // Adjust the typing speed (in milliseconds)
+  const fullText = useTypingEffect("Hello World, my name is John.", typingSpeed);
+
   return (
     <>
       <Container
@@ -20,12 +42,9 @@ export default function AboutMe() {
       >
         <Row>
           <Col>
-            <div style={{ paddingTop:"10vh", paddingLeft:"10vh", position:"absolute", width:"60%"}}>
+            <div style={{ paddingTop: "10vh", paddingLeft: "10vh", position: "absolute", width: "60%" }}>
               <h2>
-                <span> Hello World</span>
-                <span style={{ fontSize: "24px" }}>
-                  , my name is John.
-                </span>
+                {fullText}
               </h2>
             </div>
           </Col>
