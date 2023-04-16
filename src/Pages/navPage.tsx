@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
 import { RiPagesFill, RiContactsBookFill } from "react-icons/ri";
+import { RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
@@ -14,11 +15,14 @@ type VisibleComponent = "home" | "stack" | "about" | "contact";
 export default function NavPage() {
   const [visible, setVisible] = useState<VisibleComponent>("home");
   const { theme = 'light', toggleTheme = () => {} } = useTheme() ?? {};
+  const [isDark , updateIsDark]= useState(false);
 
   useEffect(() => {
     if (theme === 'dark') {
+      updateIsDark(true);
       document.documentElement.classList.add('dark-theme');
     } else {
+      updateIsDark(false);
       document.documentElement.classList.remove('dark-theme');
     }
   }, [theme]);
@@ -60,7 +64,7 @@ export default function NavPage() {
           zIndex: 9999,
         }}
       >
-        Toggle Theme
+        {isDark ? <RiLightbulbFlashFill className="icon"/> : <RiLightbulbFlashLine className="icon"/>}
       </button>
       <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
         <button className="navButton" onClick={() => changeVisible("home")}>

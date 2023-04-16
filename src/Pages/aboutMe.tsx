@@ -24,8 +24,7 @@ export default function AboutMe() {
               <h2>
                 <span> Hello World</span>
                 <span style={{ fontSize: "24px" }}>
-                  , my name is John. I am the founder of Negnan.com, a
-                  revolutionary way of understanding current events.
+                  , my name is John.
                 </span>
               </h2>
             </div>

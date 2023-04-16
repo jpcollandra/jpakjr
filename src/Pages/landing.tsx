@@ -16,32 +16,24 @@ export default function Landing() {
     navigate("/nav");
   }
 
+
   return (
     <>
       <Container
         fluid
-        className="p-0"
-        style={{
-          display: "flex",
-          height: "100vh",
-          margin: "0",
-          padding: "0",
-          width: "100%",
-        }}
+        className="p-0 d-flex align-items-stretch"
+        style={{ height: "100vh", width: "100%", overflow: "hidden" }}
       >
         <Row>
           <Col>
-              <div
-                style={{
-                  position: "relative",
-                  marginTop: "20%",
-                  marginLeft: "20%",
-                  width: "40rem",
-                }}
-              >
-                <h2>"If it can be designed I can</h2>
-                <h2>code it"</h2>
-              </div>
+            <div
+              style={{
+                paddingTop: "20%",
+                marginLeft: "10%",
+              }}
+            >
+              <h2>"The best way to predict the future is to invent it." - Alan Kay</h2>
+            </div>
             <motion.div
               animate={{ y: 100 }}
               transition={{
@@ -57,14 +49,21 @@ export default function Landing() {
                 alt="jpakjr"
               />
             </motion.div>
-            <button
-              className="buttonNeomorphic"
-              style={{ marginTop: "5%", marginLeft: "20%" }}
-              onClick={onClick}
+            <div
+              style={{
+                position: 'static',
+                top: "100%",
+                paddingLeft: "75%",
+              }}
             >
-              {" "}
-              Start{" "}
-            </button>
+              <button
+                className="buttonNeomorphic"
+                onClick={onClick}
+              >
+                {" "}
+                Start{" "}
+              </button>
+            </div>
           </Col>
         </Row>
       </Container>

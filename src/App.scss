@@ -2,6 +2,7 @@
 :root {
   --background-color: #00c3ff;
   --background-color2: #33cfff;
+  --buttonhover1: linear-gradient(145deg, #00b0e6, #00d1ff);
   --text-color: #ffffff;
 }
 
@@ -10,6 +11,7 @@
   --background-color: #202020;
   --background-color2: #333333;
   --text-color: #ffffff;
+  --buttonhover-dark: linear-gradient(145deg, #373737, #2e2e2e);
 }
 
 $fontFamily: "Roboto";
@@ -21,19 +23,9 @@ $fontFamily: "Roboto";
   color: var(--text-color);
 }
 
-$fontFamily: "Roboto";
-
-.App {
-  background-color: --backgroundColor;
-  font-family: "Roboto";
-  font-weight: 100;
-  color: --textColor;
-}
-
 .Avatar {
-    display: flex;
-    width: 20rem;
-    margin-left: 110%
+  display: flex;
+  width: 200px;
 }
 
 .aboutBio{
@@ -44,30 +36,41 @@ $fontFamily: "Roboto";
 }
 
 .buttonNeomorphic {
-  -webkit-appearance: button;
-  background-color: --backgroundColor;
-  border-radius: 20%;
-  border: 1px solid --backgroundColor;
-  box-shadow: 5px 5px 11px #00b1e8, -5px -5px 11px #00d5ff;
-  color: --textColor;
+  background-color: var(--background-color);
+  border-radius: 10%;
+  color: var(--text-color);
   font-size: larger;
   height: 40px;
-  outline: none;
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
   position: absolute;
+  border-color: #00d5ff;
+  border: 1px solid var(--background-color);
   width: 100px;
+  transition: all 0.3s ease;
 }
 
 .buttonNeomorphic:hover {
-  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+  background: var(--buttonhover1);
+  border: 1px solid var(--background-color);
   box-shadow: 5px 5px 11px #00b1e8, -5px -5px 11px #00d5ff;
+}
+
+.dark-theme .buttonNeomorphic {
+  box-shadow: none
+}
+
+
+.dark-theme .buttonNeomorphic:hover {
+  background: var(--buttonhover-dark);
+  box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
 }
 
 .navButton {
   border-radius: 30%;
   height: 80px;
   width: 100px;
-  background: var(--background-color);
   box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  background: var(--background-color);
   border: 1px solid var(--background-color);
   color: var(--text-color);
   transition: all 0.3s ease;
@@ -87,9 +90,16 @@ $fontFamily: "Roboto";
 
 .navButton:hover {
   background: linear-gradient(145deg, #00b0e6, #00d1ff);
-  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
 }
-  
+
+.dark-theme .navButton {
+  box-shadow: none
+}
+
+.dark-theme .navButton:hover {
+  background: var(--buttonhover-dark);
+  box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
+}
 
 .mainNav{
   align-items: flex-end;  
@@ -116,40 +126,64 @@ $fontFamily: "Roboto";
 }
 
 .workTitle{
-  font-family: "Roboto";
-  font-size: 100;
-  padding-left: 10vh;
-  padding-top: 10vh; 
-  position:"absolute";
+font-family: "Roboto";
+font-size: 100;
+padding-left: 10vh;
+padding-top: 10vh;
+position:"absolute";
 }
 
 .navProject {
-  border-radius: 10%;
-  height: 100px;
-  width: 200px;
-  background: var(--background-color);
-  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
-  border: 1px solid var(--background-color);
-  color: var(--text-color);
+border-radius: 10%;
+height: 100px;
+width: 200px;
+background: var(--background-color);
+box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+border: 1px solid var(--background-color);
+color: var(--text-color);
 }
 
-
 .navProject:hover {
-  background: linear-gradient(145deg, #00b0e6, #00d1ff);
-  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+background: linear-gradient(145deg, #00b0e6, #00d1ff);
+box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+}
+
+.dark-theme .navProject:hover {
+background: var(--buttonhover-dark);
 }
 
 .toggle-theme-btn {
-  background-color: --backgroundColor;
-  color: --textColor;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-radius: 30%;
+  height: 80px;
+  width: 100px;
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  background: var(--background-color);
+  border: 1px solid var(--background-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
 
-  &:hover {
-    background-color: --backgroundColor2;
+  @media (max-width: 1200px) {
+    font-size: 1.25rem;
   }
+  
+  @media (max-width: 992px) {
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+}
+
+.toggle-theme-btn:hover {
+  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+}
+
+.dark-theme .toggle-theme-btn {
+  box-shadow: none
+}
+
+.dark-theme .toggle-theme-btn:hover {
+  background: var(--buttonhover-dark);
+  box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
 }
