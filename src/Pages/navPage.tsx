@@ -6,7 +6,7 @@ import { RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
-import Referral from "./referral";
+import Resume from "./resume";
 import Contact from "./contact";
 import { useTheme } from "../ThemeContext";
 
@@ -37,7 +37,7 @@ export default function NavPage() {
       case "stack":
         return <Projects />;
       case "about":
-        return <Referral />;
+        return <Resume />;
       default:
         return <AboutMe />;
     }

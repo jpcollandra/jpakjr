@@ -117,12 +117,12 @@ $fontFamily: "Roboto";
   width: 45px;
 }
 
-.timeTitle{
-  font-family: "Roboto";
-  font-size: 100;
-  padding-left: 10vh;
-  padding-top: 10vh; 
-  position:"absolute";
+.timeTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20%;
 }
 
 .workTitle{
@@ -186,4 +186,8 @@ background: var(--buttonhover-dark);
 .dark-theme .toggle-theme-btn:hover {
   background: var(--buttonhover-dark);
   box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
+}
+
+.resumeContent {
+  text-align: left;
 }
