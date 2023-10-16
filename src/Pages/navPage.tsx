@@ -1,3 +1,4 @@
+//navPage.tsx
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
@@ -48,9 +49,9 @@ export default function NavPage() {
       <Container
         fluid
         className="p-0 d-flex align-items-stretch"
-        style={{ height: "100vh", width: "100%", overflow: "hidden" }}
+        style={{ height: "100%", width: "100%", overflow: "auto" }}
       >
-        <Row className="flex-grow-1 m-0" style={{ overflow: "hidden" }}>
+        <Row className="flex-grow-1 m-0" style={{ overflow: "auto" }}>
           <Col className="d-flex">{renderComponent()}</Col>
         </Row>
       </Container>
