@@ -205,3 +205,48 @@ $fontFamily: "Roboto";
     order: 1;
   }
 }
+
+
+// Assuming you have some base styles for your sidebar already
+.sidebar {
+  position: fixed; // Fixed position
+  left: -100%; // Start off-screen
+  top: 0;
+  width: 250px; // Or your desired width
+  height: 100%; // Full-height to cover the whole screen vertically
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: transform 0.3s ease-in-out;
+  overflow-y: auto; // In case the content is longer than the screen
+  z-index: 10; // Make sure it's above other content
+  padding: 20px; // Or your desired padding
+}
+
+// When the sidebar is visible, it translates in from the left
+.sidebar.visible {
+  transform: translateX(100%);
+}
+
+// Button styles inside the sidebar
+.sidebar button {
+  background: none;
+  border: none;
+  color: inherit; // Inherit color from sidebar
+  text-align: left; // Align text to the left
+  width: 100%; // Full width for better click area
+  margin: 10px 0; // Add some margin between buttons?
+  margin-top: 15%;
+  padding: 10px; // Padding for spacing
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--background-color2); // Change background on hover
+  }
+}
+
+// Responsive design to handle mobile view
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%; // On mobile, the sidebar can take full width
+  }
+}
