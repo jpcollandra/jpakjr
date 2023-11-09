@@ -1,7 +1,7 @@
 // navPage.tsx
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { FaHamburger } from "react-icons/fa";
+import { GiHamburger } from "react-icons/gi";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
 import { RiPagesFill, RiContactsBookFill, RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
 import "../App.scss";
@@ -104,7 +104,7 @@ export default function NavPage() {
               zIndex: 9999,
             }}
           >
-            <FaHamburger />
+            <GiHamburger className="icon"/>
           </button>
           <Sidebar isVisible={isSidebarVisible} changeVisible={changeVisible} />
         </>

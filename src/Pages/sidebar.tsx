@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isVisible, changeVisible }) => {
         <BsFillPersonFill className="icon" /> <span>Home</span>
       </button>
       <button onClick={() => changeVisible('stack')}>
-        <BsStack className="icon" /> <span>Stack</span>
+        <BsStack className="icon" /> <span>Projects</span>
       </button>
       <button onClick={() => changeVisible('about')}>
         <RiPagesFill className="icon" /> <span>About</span>
