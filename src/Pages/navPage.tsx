@@ -1,22 +1,33 @@
-//navPage.tsx
+// navPage.tsx
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { FaHamburger } from "react-icons/fa";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
-import { RiPagesFill, RiContactsBookFill } from "react-icons/ri";
-import { RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
+import { RiPagesFill, RiContactsBookFill, RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
 import Resume from "./resume";
 import Contact from "./contact";
 import { useTheme } from "../ThemeContext";
+import Sidebar from "./sidebar";
 
 type VisibleComponent = "home" | "stack" | "about" | "contact";
 
 export default function NavPage() {
   const [visible, setVisible] = useState<VisibleComponent>("home");
-  const { theme = 'light', toggleTheme = () => {} } = useTheme() ?? {};
-  const [isDark , updateIsDark]= useState(false);
+  const themeContext = useTheme();
+
+  if (!themeContext) {
+    console.error('ThemeContext not available');
+    return null; // or your fallback UI here
+  }
+
+  const { theme, toggleTheme } = themeContext;
+  
+  const [isDark, updateIsDark] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -26,11 +37,28 @@ export default function NavPage() {
       updateIsDark(false);
       document.documentElement.classList.remove('dark-theme');
     }
+
+    // Handle window resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
   }, [theme]);
 
   const changeVisible = (newVisible: VisibleComponent) => {
     setVisible(newVisible);
+    setIsSidebarVisible(false); // Close sidebar when an item is selected
   };
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
   const renderComponent = () => {
     switch (visible) {
       case "contact":
@@ -46,11 +74,7 @@ export default function NavPage() {
 
   return (
     <>
-      <Container
-        fluid
-        className="p-0 d-flex align-items-stretch"
-        style={{ height: "100%", width: "100%", overflow: "auto" }}
-      >
+      <Container fluid className="p-0 d-flex align-items-stretch" style={{ overflow: "auto" }}>
         <Row className="flex-grow-1 m-0" style={{ overflow: "auto" }}>
           <Col className="d-flex">{renderComponent()}</Col>
         </Row>
@@ -67,23 +91,44 @@ export default function NavPage() {
       >
         {isDark ? <RiLightbulbFlashFill className="icon"/> : <RiLightbulbFlashLine className="icon"/>}
       </button>
-      <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
-        <button className="navButton" onClick={() => changeVisible("home")}>
-          <BsFillPersonFill className="icon" />
-        </button>
+      
+      {isMobile && (
+        <>
+          <button
+            className="toggle-theme-btn"
+            onClick={toggleSidebar}
+            style={{
+              position: "fixed",
+              top: "20px",
+              left: "20px",
+              zIndex: 9999,
+            }}
+          >
+            <FaHamburger />
+          </button>
+          <Sidebar isVisible={isSidebarVisible} changeVisible={changeVisible} />
+        </>
+      )}
 
-        <button className="navButton" onClick={() => changeVisible("stack")}>
-          <BsStack className="icon" />
-        </button>
+      {!isMobile && (
+        <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
+          <button className="navButton" onClick={() => changeVisible("home")}>
+            <BsFillPersonFill className="icon" />
+          </button>
 
-        <button className="navButton" onClick={() => changeVisible("about")}>
-          <RiPagesFill className="icon" />
-        </button>
+          <button className="navButton" onClick={() => changeVisible("stack")}>
+            <BsStack className="icon" />
+          </button>
 
-        <button className="navButton" onClick={() => changeVisible("contact")}>
-          <RiContactsBookFill className="icon" />
-        </button>
-      </div>
+          <button className="navButton" onClick={() => changeVisible("about")}>
+            <RiPagesFill className="icon" />
+          </button>
+
+          <button className="navButton" onClick={() => changeVisible("contact")}>
+            <RiContactsBookFill className="icon" />
+          </button>
+        </div>
+      )}
     </>
   );
 }

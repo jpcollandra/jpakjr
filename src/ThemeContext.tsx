@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface ThemeContextType {
-  theme: string;
+  theme: 'light' | 'dark';
   toggleTheme: () => void;
 }
 
@@ -13,7 +13,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');

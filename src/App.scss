@@ -28,7 +28,7 @@ $fontFamily: "Roboto";
   width: 200px;
 }
 
-.aboutBio{
+.aboutBio {
   padding-left: 10vh;
   font-family: $fontFamily;
   position: "absolute"; 
@@ -56,9 +56,8 @@ $fontFamily: "Roboto";
 }
 
 .dark-theme .buttonNeomorphic {
-  box-shadow: none
+  box-shadow: none;
 }
-
 
 .dark-theme .buttonNeomorphic:hover {
   background: var(--buttonhover-dark);
@@ -93,7 +92,7 @@ $fontFamily: "Roboto";
 }
 
 .dark-theme .navButton {
-  box-shadow: none
+  box-shadow: none;
 }
 
 .dark-theme .navButton:hover {
@@ -101,7 +100,7 @@ $fontFamily: "Roboto";
   box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
 }
 
-.mainNav{
+.mainNav {
   align-items: flex-end;  
   display: flex;
   flex-direction: row;
@@ -112,7 +111,7 @@ $fontFamily: "Roboto";
   width: 100%;
 }
 
-.icon{
+.icon {
   height: 45px;
   width: 45px;
 }
@@ -125,31 +124,31 @@ $fontFamily: "Roboto";
   margin-bottom: 20%;
 }
 
-.workTitle{
-font-family: "Roboto";
-font-size: 100;
-padding-left: 10vh;
-padding-top: 10vh;
-position:"absolute";
+.workTitle {
+  font-family: "Roboto";
+  font-size: 100;
+  padding-left: 10vh;
+  padding-top: 10vh;
+  position: "absolute";
 }
 
 .navProject {
-border-radius: 25px;
-height: 80%;
-width: 110%;
-background: var(--background-color);
-box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
-border: 1px solid var(--background-color);
-color: var(--text-color);
+  border-radius: 25px;
+  height: 80%;
+  width: 110%;
+  background: var(--background-color);
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  border: 1px solid var(--background-color);
+  color: var(--text-color);
 }
 
 .navProject:hover {
-background: linear-gradient(145deg, #00b0e6, #00d1ff);
-box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
+  background: linear-gradient(145deg, #00b0e6, #00d1ff);
+  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
 }
 
 .dark-theme .navProject:hover {
-background: var(--buttonhover-dark);
+  background: var(--buttonhover-dark);
 }
 
 .toggle-theme-btn {
@@ -180,7 +179,7 @@ background: var(--buttonhover-dark);
 }
 
 .dark-theme .toggle-theme-btn {
-  box-shadow: none
+  box-shadow: none;
 }
 
 .dark-theme .toggle-theme-btn:hover {
