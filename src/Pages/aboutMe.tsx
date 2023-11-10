@@ -51,7 +51,7 @@ export default function AboutMe() {
           style={{ width: "100%" }}
         >
           <Col xs={12} lg={5} className="text-center text-col">
-            <div>
+             <div className="neomorphic-box">
               <h2>{fullText}</h2>
               <p
                 style={{

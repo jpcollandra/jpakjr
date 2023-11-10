@@ -250,3 +250,16 @@ $fontFamily: "Roboto";
     width: 100%; // On mobile, the sidebar can take full width
   }
 }
+
+.neomorphic-box {
+  background: var(--background-color);; // Use a background color close to your app's background color
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 
+    8px 8px 16px #00b1e8, // darker shadow on one side
+    -8px -8px 16px #00d5ff; // lighter "shadow" (acting as a highlight) on the other side
+}
+
+.dark-theme .neomorphic-box  {
+  box-shadow: none;
+}
