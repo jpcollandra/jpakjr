@@ -10,34 +10,47 @@ function useTypingEffect(
   text: string,
   speed: number,
   onFinish: () => void
-): string {
+): [string, () => void] {
   const [displayedText, setDisplayedText] = useState("");
-  const indexRef = useRef(-1);
+  const indexRef = useRef(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (indexRef.current < text.length - 1) {
+    if (indexRef.current < text.length) {
+      const timerId = setTimeout(() => {
+        setDisplayedText(text.slice(0, indexRef.current + 1));
         indexRef.current++;
-        setDisplayedText((prevText) => prevText + text[indexRef.current]);
-      } else {
-        clearInterval(timer);
-        onFinish();
-      }
-    }, speed);
-    return () => clearInterval(timer);
-  }, [text, speed, onFinish]);
+      }, speed);
 
-  return displayedText;
+      return () => clearTimeout(timerId);
+    } else {
+      onFinish();
+    }
+  }, [displayedText, text, speed, onFinish]);
+
+  const completeTypingInstantly = () => {
+    setDisplayedText(text);
+    onFinish();
+  };
+
+  return [displayedText, completeTypingInstantly];
 }
+
 
 export default function AboutMe() {
   const typingSpeed = 100;
   const [isTextFinished, setIsTextFinished] = useState(false);
-  const fullText = useTypingEffect(
+  const [displayedText, completeTypingInstantly] = useTypingEffect(
     "Hello World, my name is John.",
     typingSpeed,
     () => setIsTextFinished(true)
   );
+
+  const completeTyping = () => {
+    if (!isTextFinished) {
+      completeTypingInstantly();
+      setIsTextFinished(true);
+    }
+  };
 
   return (
     <>
@@ -45,39 +58,33 @@ export default function AboutMe() {
         fluid
         className="d-flex justify-content-center align-items-center"
         style={{ height: "100vh" }}
+        onClick={completeTyping} // Attach the click event listener
       >
         <Row
           className="justify-content-center align-items-center"
           style={{ width: "100%" }}
         >
           <Col xs={12} lg={5} className="text-center text-col">
-             <div className="neomorphic-box">
-              <h2>{fullText}</h2>
-              <p
-                style={{
+            <div className="neomorphic-box">
+              <h2>{displayedText}</h2>
+              <ul style={{
                   opacity: isTextFinished ? 1 : 0,
                   transition: "opacity 1s ease-in-out",
                   textAlign: "left",
                   maxWidth: "500px",
                   margin: "0 auto",
                   overflowWrap: "break-word",
-                }}
-              >
-                  I'm a Software Engineer specializing in front-end development
-                  with React and TypeScript. With a strong foundation in the
-                  MERN stack, I'm proficient in building robust, performant, and
-                  scalable web applications. My journey in the tech world began
-                  in middle school robotics and game design, which sparked my
-                  interest in coding. I've spent countless hours honing my
-                  skills, embracing both the challenges and rewards that come
-                  with software development. Skilled in various tools and
-                  frameworks beyond React—like Node.js and Firebase. My code is
-                  clean, maintainable, and follows best practices to ensure
-                  long-term viability. Feel free to explore my portfolio to see
-                  the projects I've worked on, or get in touch if you'd like to
-                  collaborate. I'm excited to bring your vision to life!
-                </p>
-              </div>
+                }}>
+                <li>Role: Full Stack Software Engineer</li>
+                <li>Key Skills: Proficient in React, React Native, Node.js and TypeScript.</li>
+                <li>Technical Expertise: Strong foundation in the MERN stack for building robust, performant, and scalable web applications.</li>
+                <li>Coding Journey: Began in middle school with robotics and game design.</li>
+                <li>Additional Skills: Firebase, Kafka, Docker, Apigee and various other tools and frameworks.</li>
+                <li>Code Quality: Emphasis on clean, maintainable code that adheres to best practices.</li>
+                <li>Portfolio: Showcases a range of projects, demonstrating skill and versatility.</li>
+                <li>Collaboration: Open to partnering on new projects and bringing visions to life.</li>
+              </ul>
+            </div>
           </Col>
           <Col xs={12} lg={5} className="image-col">
             <div style={{ padding: "10vh", textAlign: "center" }}>
