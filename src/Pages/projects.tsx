@@ -10,7 +10,7 @@ function JsonFormatter() {
 }
 
 function JsonToTsInterface() {
-  return <iframe src="../htmlScripts/json-to-ts-interface.html" title="JSON to Typescript Interface" />;
+  return <iframe src="../html/json-to-ts-interface.html" title="JSON to Typescript Interface" />;
 }
 
 function JsonToGraphQL() {
