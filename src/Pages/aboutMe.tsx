@@ -54,15 +54,10 @@ export default function AboutMe() {
 
   return (
     <>
-      <Container
-        fluid
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-        onClick={completeTyping} // Attach the click event listener
-      >
+      <Container fluid onClick={completeTyping}>
         <Row
           className="justify-content-center align-items-center"
-          style={{ width: "100%" }}
+          style={{ width: "100%", minHeight: "100vh" }}
         >
           <Col xs={12} lg={5} className="text-center text-col">
             <div className="neomorphic-box">
