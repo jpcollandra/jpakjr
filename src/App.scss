@@ -37,31 +37,62 @@ $fontFamily: "Roboto";
 
 .buttonNeomorphic {
   background-color: var(--background-color);
-  border-radius: 10%;
+  border-radius: 12px;
   color: var(--text-color);
   font-size: larger;
-  height: 40px;
-  box-shadow: 17px 17px 33px #00b1e8, -17px -17px 33px #00d5ff;
-  position: absolute;
-  border-color: #00d5ff;
-  border: 1px solid var(--background-color);
-  width: 100px;
+  font-weight: 500;
+  height: 45px;
+  box-shadow: 10px 10px 20px #00b1e8, -10px -10px 20px #00d5ff;
+  position: relative;
+  border: none;
+  width: 120px;
   transition: all 0.3s ease;
+  padding: 0 1.5rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.buttonNeomorphic:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: width 0.3s ease;
+  z-index: 1;
+  border-radius: 12px;
 }
 
 .buttonNeomorphic:hover {
   background: var(--buttonhover1);
-  border: 1px solid var(--background-color);
-  box-shadow: 5px 5px 11px #00b1e8, -5px -5px 11px #00d5ff;
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 12px #00b1e8, -6px -6px 12px #00d5ff;
+}
+
+.buttonNeomorphic:hover:before {
+  width: 100%;
+}
+
+.buttonNeomorphic:active {
+  transform: translateY(1px);
+  box-shadow: 3px 3px 6px #00b1e8, -3px -3px 6px #00d5ff;
 }
 
 .dark-theme .buttonNeomorphic {
-  box-shadow: none;
+  box-shadow: 8px 8px 16px #131313, -8px -8px 16px #2d2d2d;
 }
 
 .dark-theme .buttonNeomorphic:hover {
   background: var(--buttonhover-dark);
-  box-shadow: inset -29px 29px 57px #141414, inset 29px -29px 57px #525252;
+  box-shadow: 5px 5px 10px #131313, -5px -5px 10px #2d2d2d;
+  transform: translateY(-3px);
+}
+
+.dark-theme .buttonNeomorphic:active {
+  box-shadow: 3px 3px 6px #131313, -3px -3px 6px #2d2d2d;
+  transform: translateY(1px);
 }
 
 .navButton {
@@ -252,14 +283,443 @@ $fontFamily: "Roboto";
 }
 
 .neomorphic-box {
-  background: var(--background-color);; // Use a background color close to your app's background color
-  border-radius: 10px;
-  padding: 20px;
+  background: var(--background-color); // Use a background color close to your app's background color
+  border-radius: 20px;
+  padding: 25px;
   box-shadow: 
-    8px 8px 16px #00b1e8, // darker shadow on one side
-    -8px -8px 16px #00d5ff; // lighter "shadow" (acting as a highlight) on the other side
+    12px 12px 24px #00b1e8, // darker shadow on one side
+    -12px -12px 24px #00d5ff; // lighter "shadow" (acting as a highlight) on the other side
+  transition: all 0.3s ease;
 }
 
-.dark-theme .neomorphic-box  {
-  box-shadow: none;
+.neomorphic-box:hover {
+  box-shadow: 
+    8px 8px 16px #00b1e8, 
+    -8px -8px 16px #00d5ff;
+}
+
+.dark-theme .neomorphic-box {
+  background: var(--background-color);
+  box-shadow: 
+    8px 8px 16px #1a1a1a, 
+    -8px -8px 16px #2a2a2a;
+}
+
+.dark-theme .neomorphic-box:hover {
+  box-shadow: 
+    5px 5px 10px #151515, 
+    -5px -5px 10px #303030;
+}
+
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Experience card styles */
+.experience-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.experience-card:hover {
+  transform: translateY(-3px);
+}
+
+.experience-card.expanded {
+  box-shadow: 
+    14px 14px 28px #00a6d9, 
+    -14px -14px 28px #00e0ff;
+}
+
+.dark-theme .experience-card.expanded {
+  box-shadow: 
+    10px 10px 20px #151515, 
+    -10px -10px 20px #303030;
+}
+
+.experience-icon {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--background-color);
+  box-shadow: 
+    inset 5px 5px 10px #00aae0, 
+    inset -5px -5px 10px #00dcff;
+  transition: all 0.3s ease;
+}
+
+.dark-theme .experience-icon {
+  box-shadow: 
+    inset 5px 5px 10px #181818, 
+    inset -5px -5px 10px #282828;
+}
+
+.experience-card:hover .experience-icon {
+  transform: rotate(10deg);
+}
+
+/* Skill badge styles */
+.skill-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 30px;
+  background: var(--background-color);
+  box-shadow: 
+    3px 3px 6px #00b1e8, 
+    -3px -3px 6px #00d5ff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.skill-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    4px 4px 8px #00b1e8, 
+    -4px -4px 8px #00d5ff;
+}
+
+.dark-theme .skill-badge {
+  box-shadow: 
+    3px 3px 6px #181818, 
+    -3px -3px 6px #282828;
+}
+
+.dark-theme .skill-badge:hover {
+  box-shadow: 
+    4px 4px 8px #151515, 
+    -4px -4px 8px #2a2a2a;
+}
+
+/* About Me page styles */
+.about-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cursor-container {
+  position: relative;
+}
+
+.typing-text {
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background-color: var(--text-color);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+}
+
+.cursor.hidden {
+  opacity: 0;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.about-bio {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.skill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skill-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.skill-name {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.skill-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skill-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00b1e8, #00d5ff);
+  border-radius: 4px;
+  transition: width 1s ease-in-out;
+}
+
+.dark-theme .skill-bar {
+  background: linear-gradient(90deg, #333333, #555555);
+}
+
+.profile-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-wrapper.desktop {
+  padding: 1.5rem;
+  height: 100%;
+  justify-content: flex-start;
+  padding-bottom: 120px;
+}
+
+.desktop-profile-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.profile-intro {
+  text-align: left;
+  margin-left: 1.5rem;
+}
+
+.profile-picture-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 
+    8px 8px 16px #00aae0, 
+    -8px -8px 16px #00dcff;
+  padding: 5px;
+}
+
+.profile-picture-container.desktop-img {
+  width: 180px;
+  height: 180px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.dark-theme .profile-picture-container {
+  box-shadow: 
+    8px 8px 16px #151515, 
+    -8px -8px 16px #2a2a2a;
+}
+
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-details {
+  text-align: center;
+  width: 100%;
+}
+
+.profile-wrapper.desktop .profile-details {
+  margin-top: 1rem;
+}
+
+.profile-title {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  opacity: 0.9;
+}
+
+.profile-intro .profile-title {
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+}
+
+.profile-highlights {
+  margin-top: 1.5rem;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--background-color);
+  box-shadow: 
+    inset 3px 3px 6px #00aae0, 
+    inset -3px -3px 6px #00dcff;
+  transition: transform 0.3s ease;
+}
+
+.highlight-item:hover {
+  transform: translateY(-2px);
+}
+
+.dark-theme .highlight-item {
+  box-shadow: 
+    inset 3px 3px 6px #181818, 
+    inset -3px -3px 6px #282828;
+}
+
+.highlight-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  color: var(--text-color);
+}
+
+@media (max-width: 992px) {
+  .skills-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .profile-picture-container {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .landing-content {
+    padding: 2rem 1rem;
+  }
+  
+  .avatar-container {
+    max-width: 250px;
+    max-height: 250px;
+  }
+}
+
+/* Landing page styles */
+.landing-container {
+  background-color: var(--background-color);
+}
+
+.landing-content {
+  width: 100%;
+  max-width: 1200px;
+  padding: 3rem;
+  position: relative;
+}
+
+.landing-quote {
+  font-size: 2.25rem;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.landing-author {
+  font-size: 1.25rem;
+  opacity: 0.8;
+  font-style: italic;
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.quote-container {
+  position: relative;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.landing-button {
+  padding: 0.75rem 2rem;
+  width: auto;
+  font-size: 1.25rem;
+  position: relative;
+}
+
+.avatar-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.neomorphic-circle {
+  border-radius: 50%;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 
+    15px 15px 30px #00a6d9, 
+    -15px -15px 30px #00e0ff;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-theme .neomorphic-circle {
+  box-shadow: 
+    12px 12px 24px #151515, 
+    -12px -12px 24px #303030;
+}
+
+.avatar-image {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+}
+
+.loading-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-top-color: var(--text-color);
+  border-right-color: var(--text-color);
+  animation: spin 1.5s linear infinite;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

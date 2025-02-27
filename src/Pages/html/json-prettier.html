@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Formatter</title>
+</head>
+<body>
+
+<h1>JSON Formatter</h1>
+
+<textarea id="jsonInput" rows="10" cols="50" placeholder="Enter JSON here"></textarea><br><br>
+<button onclick="formatJSON()">Format JSON</button><br><br>
+
+<h2>Formatted JSON:</h2>
+<pre id="formattedJSON"></pre>
+
+<script>
+  function formatJSON() {
+    const inputElement = document.getElementById("jsonInput");
+    const outputElement = document.getElementById("formattedJSON");
+
+    try {
+      // Parse and then re-stringify JSON to format
+      const parsedJSON = JSON.parse(inputElement.value);
+      const formattedJSON = JSON.stringify(parsedJSON, null, 2);
+      
+      outputElement.textContent = formattedJSON;
+    } catch (e) {
+      outputElement.textContent = "Invalid JSON!";
+    }
+  }
+</script>
+
+</body>
+</html>
