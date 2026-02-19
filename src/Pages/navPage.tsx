@@ -11,6 +11,7 @@ import Resume from "./resume";
 import Contact from "./contact";
 import { useTheme } from "../ThemeContext";
 import Sidebar from "./sidebar";
+import Footer from "./footer";
 
 type VisibleComponent = "home" | "stack" | "about" | "contact";
 
@@ -74,10 +75,11 @@ export default function NavPage() {
 
   return (
     <>
-      <Container fluid className="p-0 d-flex align-items-stretch" style={{ overflow: "auto" }}>
-        <Row className="flex-grow-1 m-0" style={{ overflow: "auto" }}>
+      <Container fluid className="p-0 d-flex flex-column align-items-stretch" style={{ overflow: "auto", minHeight: "100vh" }}>
+        <Row className="m-0">
           <Col className="d-flex">{renderComponent()}</Col>
         </Row>
+        <Footer />
       </Container>
       <button
         className="toggle-theme-btn"

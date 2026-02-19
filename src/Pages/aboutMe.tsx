@@ -98,7 +98,7 @@ export default function AboutMe() {
     <Container fluid onClick={completeTyping} className="p-md-5">
       <Row
         className="justify-content-center align-items-stretch"
-        style={{ width: "100%", minHeight: "100vh", paddingTop: "2rem", paddingBottom: "8rem" }}
+        style={{ width: "100%", paddingTop: "2rem", paddingBottom: "2rem" }}
       >
         {/* Desktop layout - side by side with equal heights */}
         <Col lg={6} xl={5} className="d-none d-lg-block mb-lg-0">

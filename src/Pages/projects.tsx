@@ -50,8 +50,8 @@ export default function Projects() {
   return (
     <Container
       fluid
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh", padding: "2rem 0" }}
+      className="d-flex justify-content-center align-items-start"
+      style={{ padding: "2rem 0" }}
     >
       <div className="neomorphic-box" style={{ width: "90%", maxWidth: "1000px" }}>
         <Row className="mb-4">
