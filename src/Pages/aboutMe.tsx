@@ -7,7 +7,7 @@ import "../App.scss";
 import { motion } from "framer-motion";
 import profilePicture from "../assets/profilePicture.png";
 import { FaReact, FaNodeJs, FaMobile, FaCode, FaServer, FaDatabase } from "react-icons/fa";
-import { SiTypescript, SiJavascript, SiFirebase, SiDocker, SiApachekafka } from "react-icons/si";
+import { SiTypescript, SiJavascript, SiFirebase } from "react-icons/si";
 
 // Define skill interface
 interface Skill {
@@ -70,8 +70,6 @@ export default function AboutMe() {
     { name: "Node.js", icon: <FaNodeJs />, level: 8 },
     { name: "React Native", icon: <FaMobile />, level: 7 },
     { name: "Firebase", icon: <SiFirebase />, level: 7 },
-    { name: "Docker", icon: <SiDocker />, level: 6 },
-    { name: "Kafka", icon: <SiApachekafka />, level: 5 },
   ];
 
   // Animation variants
