@@ -110,7 +110,7 @@ export default function AboutMe() {
               <div className="cursor-container mb-4">
                 <h2 className="typing-text">
                   {displayedText}
-                  <span className={`cursor ${isTextFinished ? 'hidden' : ''}`}>|</span>
+                  <span className={`cursor ${isTextFinished ? 'hidden' : ''}`} />
                 </h2>
               </div>
               
@@ -284,7 +284,7 @@ export default function AboutMe() {
             <div className="cursor-container">
               <h2 className="mb-4 typing-text">
                 {displayedText}
-                <span className={`cursor ${isTextFinished ? 'hidden' : ''}`}>|</span>
+                <span className={`cursor ${isTextFinished ? 'hidden' : ''}`} />
               </h2>
             </div>
             

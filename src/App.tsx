@@ -3,19 +3,24 @@ import './App.scss';
 import Landing from './Pages/landing';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'animate.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import NavPage from './Pages/navPage';
 import { useTheme } from './ThemeContext';
+import PageTransition from './components/PageTransition';
 
 function App() {
   const { theme } = useTheme() ?? { theme: 'light' };
+  const location = useLocation();
 
   return (
     <div className={`App ${theme === 'dark' ? 'dark-theme' : ''}`}>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/nav" element={<NavPage />} />
-      </Routes>
+      <AnimatePresence exitBeforeEnter>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
+          <Route path="/nav" element={<PageTransition><NavPage /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
     </div>
   );
 }

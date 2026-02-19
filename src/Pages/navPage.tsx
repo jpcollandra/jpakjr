@@ -4,6 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { GiHamburger } from "react-icons/gi";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
 import { RiPagesFill, RiContactsBookFill, RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
@@ -60,6 +61,20 @@ export default function NavPage() {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
+  const subViewVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.35, ease: "easeOut" },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.25, ease: "easeIn" },
+    },
+  };
+
   const renderComponent = () => {
     switch (visible) {
       case "contact":
@@ -77,7 +92,20 @@ export default function NavPage() {
     <>
       <Container fluid className="p-0 d-flex flex-column align-items-stretch" style={{ overflow: "auto", minHeight: "100vh" }}>
         <Row className="m-0">
-          <Col className="d-flex">{renderComponent()}</Col>
+          <Col className="d-flex">
+            <AnimatePresence exitBeforeEnter>
+              <motion.div
+                key={visible}
+                variants={subViewVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                style={{ width: "100%" }}
+              >
+                {renderComponent()}
+              </motion.div>
+            </AnimatePresence>
+          </Col>
         </Row>
         <Footer />
       </Container>
