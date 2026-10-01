@@ -95,9 +95,10 @@ async function main() {
     shortNoticeAcknowledged: true,
   });
   const pinBase = `Code${5000 + Math.floor(Math.random() * 1000)}`;
+  const initialPayloads = [payload(pinBase, 0), payload(pinBase, 1)];
   const samePin = await Promise.allSettled([
-    call(a, "create", payload(pinBase, 0)),
-    call(b, "create", payload(pinBase, 1)),
+    call(a, "create", initialPayloads[0]),
+    call(b, "create", initialPayloads[1]),
   ]);
   assert.equal(
     samePin.filter((result) => result.status === "fulfilled").length,
@@ -108,6 +109,8 @@ async function main() {
     .booking;
   assert.equal(first.status, "requested");
   const owner = samePin[0].status === "fulfilled" ? a : b;
+  const ownerPayload =
+    initialPayloads[samePin[0].status === "fulfilled" ? 0 : 1];
   const other = owner === a ? b : a;
   console.log("PASS concurrent duplicate access-code rejection");
   day = await call(a, "day", { date: key });
@@ -185,6 +188,29 @@ async function main() {
   assert.equal(first.status, "confirmed");
   assert.equal(first.contact, "https://example.test/approved-call");
   console.log("PASS pending note-only editing and atomic video-link approval");
+  first = (
+    await call(owner, "update", {
+      id: first.id,
+      version: first.version,
+      date: first.date,
+      startMs: first.startMs,
+      details: { ...first, email: "corrected@example.test" },
+    })
+  ).booking;
+  assert.equal(first.status, "confirmed");
+  const correctionMail = await db
+    .collection("schedulerMail")
+    .where("bookingId", "==", first.id)
+    .get();
+  const oldAttendeeCancellations = correctionMail.docs.filter(
+    (doc) => doc.id.startsWith(`${first.id}-${first.version}-cancelled-`),
+  );
+  assert.equal(oldAttendeeCancellations.length, 1);
+  assert.equal(oldAttendeeCancellations[0].data().to, details.email);
+  assert.ok(
+    oldAttendeeCancellations[0].data().invite.includes("METHOD:CANCEL"),
+  );
+  console.log("PASS attendee email correction cancels only the old attendee");
   await call(admin, "availability", {
     date: key,
     timeZone: "America/New_York",
@@ -257,10 +283,14 @@ async function main() {
     pin: "Reset007",
   });
   assert.equal((await call(owner, "session")).role, null);
+  await assert.rejects(
+    call(owner, "create", ownerPayload),
+    /own meeting|access has expired/,
+  );
   await call(other, "unlock", { pin: "Reset007" });
   const reset = (await call(other, "session")).booking;
   assert.equal(reset.id, first.id);
-  console.log("PASS access-code reset and previous-session revocation");
+  console.log("PASS access-code reset revokes sessions and create replays");
   await call(other, "delete", { id: first.id, version: reset.version });
   assert.equal((await call(other, "session")).role, null);
   const reused = (
@@ -329,9 +359,39 @@ async function main() {
   console.log("PASS notification recipients and access-code delivery");
   await db.doc(`schedulerSessions/${a.localId}`).update({ expiresAt: 0 });
   assert.equal((await call(a, "session")).role, null);
-  console.log("PASS expired-session rejection");
-  for (const booking of [declined, reused, retry.booking])
+  await assert.rejects(call(a, "create", retryPayload), /access has expired/);
+  console.log("PASS expired-session and create-replay rejection");
+  for (let booking of [declined, reused, retry.booking]) {
+    if (["requested", "confirmed"].includes(booking.status)) {
+      await assert.rejects(
+        call(admin, "delete", { id: booking.id, version: booking.version }),
+        /Cancel this meeting/,
+      );
+      booking = (
+        await call(admin, "cancel", { id: booking.id, version: booking.version })
+      ).booking;
+    }
     await call(admin, "delete", { id: booking.id, version: booking.version });
+  }
+  // Final messages may outlive booking deletion just long enough for local SMTP
+  // delivery. Never remove them before the worker has had its delivery attempt.
+  for (const bookingId of [first.id, declined.id, reused.id, retry.booking.id]) {
+    const deadline = Date.now() + 15000;
+    let remaining;
+    do {
+      remaining = await db
+        .collection("schedulerMail")
+        .where("bookingId", "==", bookingId)
+        .get();
+      if (remaining.empty) break;
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    } while (Date.now() < deadline);
+    assert.ok(
+      remaining.empty,
+      "final test notifications finish and remove their records",
+    );
+  }
+  console.log("PASS cancellation/decline delivery survives deletion and cleans up");
   await call(admin, "clearAvailability", { date: key });
   assert.equal(
     (await call(a, "day", { date: key })).timeZone,

@@ -145,9 +145,18 @@ async function sessionInTransaction(tx, uid, id) {
   return { session, booking };
 }
 
-function queueMail(tx, booking, event, calendarZone, accessCode) {
+function queueMail(
+  tx,
+  booking,
+  event,
+  calendarZone,
+  accessCode,
+  audiences = ["visitor", "admin"],
+) {
   const includeInvite = ["confirmed", "updated", "cancelled"].includes(event);
   [booking.email, D.ADMIN_EMAIL].forEach((email, index) => {
+    const audience = index === 1 ? "admin" : "visitor";
+    if (!audiences.includes(audience)) return;
     tx.create(
       db
         .collection("schedulerMail")
@@ -158,12 +167,12 @@ function queueMail(tx, booking, event, calendarZone, accessCode) {
         ...notification(
           booking,
           event,
-          index === 1 ? "admin" : "visitor",
+          audience,
           siteUrl.value(),
           accessCode,
         ),
         event,
-        audience: index === 1 ? "admin" : "visitor",
+        audience,
         invite: includeInvite ? D.calendarInvite(booking) : null,
         status: "queued",
         attempts: 0,
@@ -308,14 +317,13 @@ async function handle(request) {
           tx.get(grantRef(uid)),
         ]);
       if (previous.exists) {
-        const booking = (
-          await tx.get(bookingRef(previous.data().bookingId))
-        ).data();
-        if (!booking)
-          error(
-            "failed-precondition",
-            "This submission was already processed. Open a new booking form.",
-          );
+        // An idempotency key identifies a submission, not an access credential.
+        // Replays must respect logout, expiry, and management-code revocation.
+        const { booking } = await sessionInTransaction(
+          tx,
+          uid,
+          previous.data().bookingId,
+        );
         return { booking: D.publicBooking(booking) };
       }
       if (reservation.exists)
@@ -564,13 +572,40 @@ async function handle(request) {
         return { booking: D.publicBooking(updated) };
       }
       if (action === "delete") {
+        if (["requested", "confirmed"].includes(booking.status))
+          error(
+            "failed-precondition",
+            "Cancel this meeting before deleting it so attendees are notified.",
+          );
+        // Read current delivery state inside the transaction. The mail worker
+        // may have claimed or finished these records since the query ran.
+        const messages = await Promise.all(
+          relatedToDelete[0].docs.map((record) => tx.get(record.ref)),
+        );
+        let finalNotificationsPending = false;
         for (const key of booking.pinKeys)
           tx.delete(db.collection("schedulerPins").doc(key));
-        for (const records of relatedToDelete)
+        for (const message of messages) {
+          const current = message.data();
+          if (
+            current &&
+            ["cancelled", "request-cancelled", "declined"].includes(
+              current.event,
+            ) &&
+            current.status !== "sent" &&
+            current.attempts < 3
+          ) {
+            // Keep only outstanding final notifications, not booking access or
+            // history. Delivery removes them; daily cleanup bounds failures.
+            tx.update(message.ref, { deleteAfterDeliveryAt: now + D.DAY_MS });
+            finalNotificationsPending = true;
+          } else tx.delete(message.ref);
+        }
+        for (const records of relatedToDelete.slice(1))
           for (const record of records.docs) tx.delete(record.ref);
         tx.delete(bookingRef(booking.id));
         tx.set(stateRef, next);
-        return { ok: true };
+        return { ok: true, finalNotificationsPending };
       }
       if (action === "cancel") {
         if (booking.status === "cancelled")
@@ -641,7 +676,8 @@ async function handle(request) {
       });
       tx.set(bookingRef(booking.id), updated);
       tx.set(stateRef, next);
-      if (moving && booking.status === "confirmed")
+      const attendeeChanged = details.email !== booking.email;
+      if (booking.status === "confirmed" && (moving || attendeeChanged))
         queueMail(
           tx,
           {
@@ -652,6 +688,9 @@ async function handle(request) {
           },
           "cancelled",
           D.scheduleFor(state, booking.date).timeZone,
+          undefined,
+          // An address-only correction must not cancel John's unchanged event.
+          moving ? ["visitor", "admin"] : ["visitor"],
         );
       queueMail(
         tx,
@@ -701,8 +740,16 @@ exports.sendSchedulerMail = onDocumentCreated(
     const ref = event.data.ref;
     const message = await db.runTransaction(async (tx) => {
       const current = (await tx.get(ref)).data();
-      if (!current || current.status === "sent" || current.attempts >= 3)
+      if (!current) return null;
+      if (
+        current.status === "sent" ||
+        current.attempts >= 3 ||
+        (current.deleteAfterDeliveryAt &&
+          current.deleteAfterDeliveryAt <= Date.now())
+      ) {
+        if (current.deleteAfterDeliveryAt) tx.delete(ref);
         return null;
+      }
       if ((current.leaseUntil || 0) > Date.now())
         throw new Error(
           "Email delivery is already in progress; retry after the lease expires.",
@@ -758,13 +805,29 @@ exports.sendSchedulerMail = onDocumentCreated(
             ]
           : [],
       });
-      await ref.update({ status: "sent", sentAt: Date.now(), leaseUntil: 0 });
+      await finishMailDelivery(ref, true);
     } catch (err) {
-      await ref.update({ status: "failed", leaseUntil: 0 });
+      await finishMailDelivery(ref, false);
       throw new Error("Scheduler email delivery failed.");
     }
   },
 );
+
+async function finishMailDelivery(ref, delivered) {
+  await db.runTransaction(async (tx) => {
+    const current = (await tx.get(ref)).data();
+    if (!current) return;
+    // Deletion may have been requested after this worker acquired its lease.
+    if (current.deleteAfterDeliveryAt && (delivered || current.attempts >= 3))
+      tx.delete(ref);
+    else
+      tx.update(ref, {
+        status: delivered ? "sent" : "failed",
+        ...(delivered ? { sentAt: Date.now() } : {}),
+        leaseUntil: 0,
+      });
+  });
+}
 
 exports.purgeExpiredSchedulerData = onSchedule(
   {
@@ -800,6 +863,17 @@ exports.purgeExpiredSchedulerData = onSchedule(
       for (const session of sessions.docs) batch.delete(session.ref);
       for (const request of requests.docs) batch.delete(request.ref);
       batch.delete(snapshot.ref);
+      await batch.commit();
+    }
+    const abandonedNotifications = await db
+      .collection("schedulerMail")
+      .where("deleteAfterDeliveryAt", "<=", Date.now())
+      .limit(100)
+      .get();
+    if (!abandonedNotifications.empty) {
+      const batch = db.batch();
+      for (const message of abandonedNotifications.docs)
+        batch.delete(message.ref);
       await batch.commit();
     }
   },

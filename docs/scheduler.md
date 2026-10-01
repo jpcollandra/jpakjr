@@ -24,8 +24,13 @@ Pending and confirmed bookings retain their existing slot when editing, even
 after availability changes. Confirmed rescheduling explicitly warns that the old
 invitation will be cancelled and the new time requires approval. Browser Back from
 review returns to editing; drafts are kept in tab-scoped session storage for up
-to 24 hours and cleared on success. Returning email links preselect the booking
-but still require its management code (they are not passwordless sign-in links).
+to 24 hours and cleared on success. Returning email links preselect the booking,
+including after admin sign-in, but still require a management code (they are not
+passwordless sign-in links). Idempotent submission retries require current,
+unexpired booking or admin access; logout and code reset also revoke retry access.
+Changing the email on a confirmed meeting cancels the old attendee's invitation
+and sends an updated invitation to the new attendee. An address-only correction
+keeps John's existing meeting confirmed; moving the meeting still needs approval.
 
 Default availability is Monday–Friday, 9 AM–5 PM Hawaii time, 60 days ahead.
 Date-specific hours, closures, and timezones are supported. Existing meetings
@@ -54,8 +59,16 @@ away require an explicit short-notice acknowledgment.
   emails include the code so the visitor can retain it.
 - Access grants expire after 30 minutes. A timed-out edit can be re-authenticated
   in a second tab without clearing the original form.
-- Recruiters may permanently delete their own booking. Otherwise, booking,
-  credential, and outbox data is automatically purged 90 days after the meeting.
+- Recruiters may permanently delete their own booking after cancelling an active
+  meeting. The API enforces this, not only the interface. Booking details, codes,
+  sessions, submission records, and notification history are removed immediately.
+  Outstanding final cancellation/decline email records remain temporarily so
+  deletion cannot suppress delivery. They are removed after delivery succeeds or
+  all three attempts fail. Daily cleanup removes leftovers once their 24-hour
+  deadline has passed; this can occur at the next daily run, not precisely at
+  the 24-hour mark. The deletion dialog explains this exception.
+  Otherwise, booking, credential, and outbox data is automatically purged 90 days
+  after the meeting.
 - Incorrect unlock guesses are limited to five per IP in 15 minutes; successful
   sign-ins do not consume that budget. Lockouts show the actual remaining wait.
   Booking creation is

@@ -371,7 +371,9 @@ export default function SchedulerManage() {
       await schedulerApi<Session>("unlock", { pin });
       setPin("");
       setNotice("");
-      await refresh();
+      await refresh(
+        params.get("requested") || params.get("booking") || undefined,
+      );
     } catch (err) {
       setError(errorMessage(err));
       const retryDetails = (
@@ -426,7 +428,9 @@ export default function SchedulerManage() {
     setSaving(true);
     setError("");
     try {
-      await schedulerApi(dialog, {
+      const result = await schedulerApi<{
+        finalNotificationsPending?: boolean;
+      }>(dialog, {
         id: booking.id,
         version: booking.version,
         pin: dialog === "resetPin" ? newPin : undefined,
@@ -438,7 +442,9 @@ export default function SchedulerManage() {
       });
       setNotice(
         dialog === "delete"
-          ? "Booking and stored personal details deleted."
+          ? result.finalNotificationsPending
+            ? "Booking and access deleted. Final cancellation or decline emails will finish sending, then their temporary records will be removed."
+            : "Booking and stored personal details deleted."
           : dialog === "approve"
             ? "Meeting approved. Calendar invitations are queued."
             : dialog === "decline"
@@ -846,7 +852,10 @@ export default function SchedulerManage() {
                       <p>
                         Permanently removes this booking and its stored personal
                         details. This cannot be undone. Cancel an active meeting
-                        first so everyone is notified.
+                        first so everyone is notified. Unsent cancellation or
+                        decline emails are kept temporarily to finish delivery,
+                        then removed. Daily cleanup removes leftovers after 24
+                        hours.
                       </p>
                       <button
                         className="scheduler-button danger"
@@ -1023,10 +1032,11 @@ export default function SchedulerManage() {
             </p>
           ) : dialog === "delete" ? (
             <p>
-              This removes the booking, personal details, queued email records,
-              and reserved access codes. This cannot be undone. Download any
-              invitation you need first. To notify attendees that a confirmed
-              meeting is cancelled, cancel it before deleting its data.
+              This removes the booking, access codes, and stored history. This
+              cannot be undone. Download any cancellation you need first. Final
+              cancellation or decline emails can still finish sending; their
+              temporary records are removed after delivery attempts finish, or
+              by daily cleanup after 24 hours.
             </p>
           ) : (
             <>

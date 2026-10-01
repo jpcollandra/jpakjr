@@ -5,7 +5,7 @@ emulators. No test bookings or email left the local environment.
 
 ## Automated checks
 
-- Scheduler frontend checks: 39 tests passed, including the existing date/calendar
+- Scheduler frontend checks: 44 tests passed, including the existing date/calendar
   tests plus rendered booking, calendar, recovery, and copy/save controls. Coverage
   includes pending note-only edits, draft restoration/Back, generated codes,
   optional fields, confirmed-reschedule warnings, focused field errors,
@@ -14,17 +14,28 @@ emulators. No test bookings or email left the local environment.
   loading/saving/sending feedback with success and error recovery, repeated and
   same-date modal selection, timezone regrouping, focus trapping/restoration,
   Escape dismissal, unavailable dates, and a full-horizon performance regression.
-- Functions domain/notification tests: 10 tests passed. Coverage includes default and custom
+  PR-review regression tests additionally cover admin email targets through
+  sign-in, missing-target fallback, active-deletion protection, and the temporary
+  final-notification retention explanation.
+- Functions callback/domain/notification tests: 22 tests passed. Coverage includes default and custom
   availability, timezone changes, short-notice/conflict handling, access-code
   validation, optional video details, HTTPS approval validation, private response
   fields, role-specific email actions/local dates/decline explanations, and
-  REQUEST/CANCEL calendar invitations.
+  REQUEST/CANCEL calendar invitations. Actual callbacks are exercised against
+  isolated Firestore/SMTP fakes for authorized retries, expiry/logout/code-reset
+  replay rejection, email-only and combined time/email corrections, active
+  deletion rejection, cancellation after deletion, deletion during an active
+  SMTP lease, retry exhaustion, duplicate triggers, and detached-email cleanup.
 - Emulator integration passed concurrent access-code and time conflicts,
   ownership and admin boundaries, public-data sanitization, Firestore rules,
   pending note-only edits and atomic approval with a video link, timezone preservation, stale-update rejection, cancellation,
   access-code reset/session revocation, recruiter deletion, code reuse,
   idempotent retries, access expiry, failed-guess-only sign-in limiting, typed
   email history with timestamps, decline explanations, and email recipients.
+  The integration harness was re-run after the PR-review fixes and additionally
+  passed attendee email corrections, revoked/expired create replay rejection,
+  active-deletion rejection, and final cancellation/decline delivery and record
+  cleanup after booking deletion. All SMTP traffic went to the local test inbox.
 - `npx tsc --noEmit`, `node --check functions/index.js`, the optimized React
   production build, and `git diff --check` passed.
 
@@ -35,7 +46,10 @@ emulators. No test bookings or email left the local environment.
 - Only approval sends a REQUEST calendar invitation. Video preferences are
   optional; the real HTTPS meeting URL is supplied in the approval dialog.
 - Declining or cancelling releases the time. A recruiter may reschedule or
-  permanently delete their booking and associated stored email records.
+  permanently delete their booking and associated stored email history. An active
+  booking must be cancelled before deletion. Outstanding final notification
+  records are kept only to finish delivery, then removed; daily cleanup removes
+  leftovers after their 24-hour deadline.
 - Calendar cells use compact Open/unavailable states, with a time-choice modal
   and a Next available shortcut. Fully past weeks are hidden; adjacent month
   cells identify the month. Unavailable dates are muted and non-selectable.
