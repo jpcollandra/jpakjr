@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
 import "../App.scss";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope, FaTwitter } from "react-icons/fa";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
+import { Link, useLocation } from "react-router-dom";
+import AvatarLoader from "../components/AvatarLoader";
 
 interface ContactLink {
   name: string;
@@ -14,12 +16,23 @@ interface ContactLink {
 }
 
 export default function Contact() {
+  const form = useRef<HTMLFormElement>(null);
+  const { hash } = useLocation();
+  useEffect(() => {
+    document.title = "Contact John · John Collandra";
+    if (hash === "#contact-form") {
+      form.current?.scrollIntoView?.({ block: "start" });
+      form.current?.focus({ preventScroll: true });
+    }
+  }, [hash]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
 
   const contactLinks: ContactLink[] = [
     {
@@ -37,8 +50,8 @@ export default function Contact() {
     {
       name: "Email",
       icon: <FaEnvelope />,
-      url: "mailto:jpakjr101@gmail.com",
-      label: "jpakjr101@gmail.com",
+      url: "mailto:jpcollandra@gmail.com",
+      label: "jpcollandra@gmail.com",
     },
     {
       name: "Twitter / X",
@@ -68,7 +81,7 @@ export default function Contact() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -94,7 +107,10 @@ export default function Contact() {
       className="d-flex justify-content-center align-items-start"
       style={{ padding: "2rem 0" }}
     >
-      <div className="neomorphic-box" style={{ width: "90%", maxWidth: "800px" }}>
+      <div
+        className="neomorphic-box"
+        style={{ width: "90%", maxWidth: "800px" }}
+      >
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -105,8 +121,16 @@ export default function Contact() {
             <FaEnvelope className="me-3" /> Get In Touch
           </h1>
           <p style={{ fontSize: "1.1rem", opacity: 0.9, marginTop: "1rem" }}>
-            I'm always open to new opportunities, collaborations, or just a friendly chat. Feel free to reach out!
+            I'm always open to new opportunities, collaborations, or just a
+            friendly chat. Feel free to reach out!
           </p>
+          <Link
+            to="/calendar"
+            className="buttonNeomorphic contact-scheduler-link d-inline-flex align-items-center justify-content-center"
+            style={{ width: "auto", textDecoration: "none", minHeight: 48 }}
+          >
+            Schedule a conversation
+          </Link>
         </motion.div>
 
         <motion.div
@@ -122,7 +146,11 @@ export default function Contact() {
                 variants={itemVariants}
                 href={link.url}
                 target={link.url.startsWith("mailto:") ? undefined : "_blank"}
-                rel={link.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                rel={
+                  link.url.startsWith("mailto:")
+                    ? undefined
+                    : "noopener noreferrer"
+                }
                 className="contact-card"
               >
                 <div className="contact-card-icon">{link.icon}</div>
@@ -136,11 +164,21 @@ export default function Contact() {
 
           {/* Contact Form */}
           <motion.div variants={itemVariants}>
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <h4 className="mb-3">Send a Message</h4>
+            <form
+              id="contact-form"
+              ref={form}
+              tabIndex={-1}
+              aria-labelledby="contact-form-heading"
+              className="contact-form"
+              onSubmit={handleSubmit}
+            >
+              <h4 id="contact-form-heading" className="mb-3">
+                Send a Message
+              </h4>
               <input
                 type="text"
                 name="name"
+                aria-label="Your name"
                 className="contact-input"
                 placeholder="Your Name"
                 value={formData.name}
@@ -150,6 +188,7 @@ export default function Contact() {
               <input
                 type="email"
                 name="email"
+                aria-label="Your email"
                 className="contact-input"
                 placeholder="Your Email"
                 value={formData.email}
@@ -158,6 +197,7 @@ export default function Contact() {
               />
               <textarea
                 name="message"
+                aria-label="Your message"
                 className="contact-textarea"
                 placeholder="Your Message"
                 rows={5}
@@ -170,10 +210,22 @@ export default function Contact() {
                 className="contact-send-btn"
                 disabled={submitStatus === "sending"}
               >
-                {submitStatus === "sending" ? "Sending..." : submitStatus === "sent" ? "Sent!" : "Send Message"}
+                {submitStatus === "sending" ? (
+                  <AvatarLoader variant="inline" label="Sending…" />
+                ) : submitStatus === "sent" ? (
+                  "Sent!"
+                ) : (
+                  "Send Message"
+                )}
               </button>
               {submitStatus === "error" && (
-                <p style={{ color: "#ff6b6b", marginTop: "0.5rem", fontSize: "0.9rem" }}>
+                <p
+                  style={{
+                    color: "#ff6b6b",
+                    marginTop: "0.5rem",
+                    fontSize: "0.9rem",
+                  }}
+                >
                   Something went wrong. Please try again.
                 </p>
               )}

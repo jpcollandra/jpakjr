@@ -1,4 +1,4 @@
-rules_version='2'
+rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -9,5 +9,14 @@ service cloud.firestore {
         && request.resource.data.message is string;
       allow read, update, delete: if false;
     }
+    // Scheduler access, validation, access-code reservations, and email delivery are
+    // handled by callable Functions. No browser can read these collections.
+    match /scheduler/{document=**} { allow read, write: if false; }
+    match /schedulerBookings/{document=**} { allow read, write: if false; }
+    match /schedulerPins/{document=**} { allow read, write: if false; }
+    match /schedulerSessions/{document=**} { allow read, write: if false; }
+    match /schedulerLimits/{document=**} { allow read, write: if false; }
+    match /schedulerRequests/{document=**} { allow read, write: if false; }
+    match /schedulerMail/{document=**} { allow read, write: if false; }
   }
 }

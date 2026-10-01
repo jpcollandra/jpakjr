@@ -4,7 +4,9 @@ import { Col, Container, Row } from "react-bootstrap";
 import { GiHamburger } from "react-icons/gi";
 import { BsFillPersonFill, BsStack } from "react-icons/bs";
 import { RiPagesFill, RiContactsBookFill, RiLightbulbFlashFill, RiLightbulbFlashLine } from "react-icons/ri";
+import { FaCalendarAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import "../App.scss";
 import AboutMe from "./aboutMe";
 import Projects from "./projects";
@@ -16,8 +18,9 @@ import Footer from "./footer";
 
 type VisibleComponent = "home" | "stack" | "about" | "contact";
 
-export default function NavPage() {
-  const [visible, setVisible] = useState<VisibleComponent>("home");
+export default function NavPage({ initialView = "home" }: { initialView?: VisibleComponent }) {
+  const navigate = useNavigate();
+  const [visible, setVisible] = useState<VisibleComponent>(initialView);
   const themeContext = useTheme();
 
   if (!themeContext) {
@@ -112,6 +115,7 @@ export default function NavPage() {
       <button
         className="toggle-theme-btn"
         onClick={toggleTheme}
+        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
         style={{
           position: "fixed",
           top: "20px",
@@ -127,6 +131,9 @@ export default function NavPage() {
           <button
             className="toggle-theme-btn"
             onClick={toggleSidebar}
+            aria-label={isSidebarVisible ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={isSidebarVisible}
+            aria-controls="portfolio-navigation"
             style={{
               position: "fixed",
               top: "20px",
@@ -141,23 +148,27 @@ export default function NavPage() {
       )}
 
       {!isMobile && (
-        <div className="d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" style={{ width: "100%", maxWidth: "40rem", margin: "0 auto" }}>
-          <button className="navButton" onClick={() => changeVisible("home")}>
+        <nav className="portfolio-dock d-flex justify-content-between align-items-center fixed-bottom pb-5 px-3" aria-label="Portfolio navigation">
+          <button className="navButton" aria-label="Home" title="Home" onClick={() => changeVisible("home")}>
             <BsFillPersonFill className="icon" />
           </button>
 
-          <button className="navButton" onClick={() => changeVisible("stack")}>
+          <button className="navButton" aria-label="Projects" title="Projects" onClick={() => changeVisible("stack")}>
             <BsStack className="icon" />
           </button>
 
-          <button className="navButton" onClick={() => changeVisible("about")}>
+          <button className="navButton" aria-label="About" title="Work experience" onClick={() => changeVisible("about")}>
             <RiPagesFill className="icon" />
           </button>
 
-          <button className="navButton" onClick={() => changeVisible("contact")}>
+          <button className="navButton" aria-label="Contact" title="Contact" onClick={() => changeVisible("contact")}>
             <RiContactsBookFill className="icon" />
           </button>
-        </div>
+
+          <button className="navButton schedule-nav-button" aria-label="Schedule a meeting" title="Schedule a meeting" onClick={() => navigate("/calendar")}>
+            <FaCalendarAlt className="icon" />
+          </button>
+        </nav>
       )}
     </>
   );

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../App.scss";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCalendarAlt } from "react-icons/fa";
+import AvatarLoader, { AVATAR_IMAGE_SRC } from "../components/AvatarLoader";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -14,9 +15,10 @@ export default function Landing() {
 
   useEffect(() => {
     if (spin) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         navigate("/nav");
       }, 2000);
+      return () => clearTimeout(timer);
     }
   }, [spin, navigate]);
 
@@ -27,28 +29,28 @@ export default function Landing() {
   // Animation variants
   const quoteVariants = {
     hidden: { opacity: 0, y: -50 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 1,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const avatarContainerVariants = {
-    hover: { 
+    hover: {
       scale: 1.05,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   const buttonVariants = {
-    hover: { 
+    hover: {
       scale: 1.05,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
@@ -71,14 +73,14 @@ export default function Landing() {
               </h2>
               <p className="landing-author">- Alan Kay</p>
             </motion.div>
-            
-            <motion.div 
-              className="mt-5 d-flex justify-content-center justify-content-lg-start"
+
+            <motion.div
+              className="mt-5 d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.5 }}
             >
-              <motion.button 
+              <motion.button
                 className="landing-button buttonNeomorphic"
                 onClick={handleStart}
                 onMouseEnter={() => setIsHovered(true)}
@@ -88,8 +90,8 @@ export default function Landing() {
                 disabled={spin}
               >
                 <span className="d-flex align-items-center justify-content-center">
-                  Enter 
-                  <motion.div 
+                  Enter
+                  <motion.div
                     initial={{ x: 0 }}
                     animate={isHovered && !spin ? { x: 5 } : { x: 0 }}
                     transition={{ duration: 0.3 }}
@@ -99,9 +101,20 @@ export default function Landing() {
                   </motion.div>
                 </span>
               </motion.button>
+              <motion.button
+                className="landing-button buttonNeomorphic schedule-landing-button"
+                onClick={() => navigate("/calendar")}
+                variants={buttonVariants}
+                whileHover="hover"
+                disabled={spin}
+              >
+                <span className="d-flex align-items-center justify-content-center gap-2">
+                  <FaCalendarAlt aria-hidden="true" /> Schedule a meeting
+                </span>
+              </motion.button>
             </motion.div>
           </Col>
-          
+
           <Col lg={6} className="d-flex justify-content-center">
             <motion.div
               className="avatar-container"
@@ -111,42 +124,27 @@ export default function Landing() {
               variants={avatarContainerVariants}
               whileHover="hover"
             >
-              <motion.div
-                className="neomorphic-circle"
-                animate={spin ? { rotate: 360 } : {}}
-                transition={{ duration: 2 }}
-              >
-                <motion.img
-                  src="/assets/jpakjrFig.png"
-                  className="avatar-image"
-                  alt="jpakjr"
-                  animate={
-                    spin 
-                      ? { rotate: 360, scale: 0.8 } 
-                      : { 
-                          y: [0, 15, 0],
-                          transition: {
-                            y: {
-                              repeat: Infinity,
-                              duration: 2,
-                              ease: "easeInOut"
-                            }
-                          }
-                        }
-                  }
-                />
-              </motion.div>
-              
-              <AnimatePresence>
-                {spin && (
-                  <motion.div 
-                    className="loading-ring"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
+              {spin ? (
+                <AvatarLoader variant="hero" label="Opening portfolio…" />
+              ) : (
+                <div className="neomorphic-circle">
+                  <motion.img
+                    src={AVATAR_IMAGE_SRC}
+                    className="avatar-image"
+                    alt="jpakjr"
+                    animate={{
+                      y: [0, 15, 0],
+                      transition: {
+                        y: {
+                          repeat: Infinity,
+                          duration: 2,
+                          ease: "easeInOut",
+                        },
+                      },
+                    }}
                   />
-                )}
-              </AnimatePresence>
+                </div>
+              )}
             </motion.div>
           </Col>
         </Row>
