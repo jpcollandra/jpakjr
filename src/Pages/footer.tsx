@@ -11,7 +11,7 @@ interface SocialLink {
 const socialLinks: SocialLink[] = [
   { icon: <FaGithub />, url: "https://github.com/jpcollandra", label: "GitHub" },
   { icon: <FaLinkedin />, url: "https://www.linkedin.com/in/jpakjr/", label: "LinkedIn" },
-  { icon: <FaEnvelope />, url: "mailto:jpakjr101@gmail.com", label: "Email" },
+  { icon: <FaEnvelope />, url: "mailto:jpcollandra@gmail.com", label: "Email" },
   { icon: <FaTwitter />, url: "https://x.com/jpakjr", label: "Twitter" },
 ];
 

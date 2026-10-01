@@ -28,3 +28,10 @@ yarn-error.log*
 .playwright-mcp/
 pglite-debug.log
 neomorphic-style-guide.html
+functions/node_modules/
+functions/.secret.local
+functions/.env.local
+functions/.env.*
+!functions/.env.example
+*-debug.log
+scheduler-verification/

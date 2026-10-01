@@ -8,6 +8,9 @@ import { AnimatePresence } from 'framer-motion';
 import NavPage from './Pages/navPage';
 import { useTheme } from './ThemeContext';
 import PageTransition from './components/PageTransition';
+import SchedulerCalendar from './Pages/schedulerCalendar';
+import SchedulerBooking from './Pages/schedulerBooking';
+import SchedulerManage from './Pages/schedulerManage';
 
 function App() {
   const { theme } = useTheme() ?? { theme: 'light' };
@@ -19,6 +22,10 @@ function App() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
           <Route path="/nav" element={<PageTransition><NavPage /></PageTransition>} />
+          <Route path="/contact" element={<PageTransition><NavPage initialView="contact" /></PageTransition>} />
+          <Route path="/calendar" element={<SchedulerCalendar />} />
+          <Route path="/calendar/book/:date" element={<SchedulerBooking />} />
+          <Route path="/calendar/manage" element={<SchedulerManage />} />
         </Routes>
       </AnimatePresence>
     </div>

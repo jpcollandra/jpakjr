@@ -1,0 +1,103 @@
+.avatar-loader {
+  --avatar-loader-size: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 240px;
+  padding: 2rem 1rem;
+  color: #123d4d;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.dark-theme .avatar-loader {
+  color: var(--text-color, #fff);
+}
+
+.avatar-loader__portrait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--avatar-loader-size);
+  height: var(--avatar-loader-size);
+  border-radius: 50%;
+  background: var(--background-color);
+  box-shadow: var(--neomorphic-card-shadow);
+}
+
+.avatar-loader__image {
+  display: block;
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  transform-origin: center;
+  animation: avatar-loader-spin 2s linear infinite;
+}
+
+.avatar-loader__label {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.avatar-loader--compact {
+  --avatar-loader-size: 64px;
+  min-height: 140px;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+
+.avatar-loader--hero {
+  --avatar-loader-size: 280px;
+  min-height: 0;
+  padding: 0;
+}
+
+.avatar-loader--inline,
+.dark-theme .avatar-loader--inline {
+  --avatar-loader-size: 32px;
+  display: inline-flex;
+  flex-direction: row;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  gap: 0.5rem;
+  color: inherit;
+  vertical-align: middle;
+
+  .avatar-loader__portrait {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .avatar-loader__image {
+    width: 90%;
+    height: 90%;
+  }
+
+  .avatar-loader__label {
+    font: inherit;
+  }
+}
+
+@keyframes avatar-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 992px) {
+  .avatar-loader--hero {
+    --avatar-loader-size: min(210px, 60vw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-loader__image {
+    animation: none;
+  }
+}

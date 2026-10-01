@@ -12,3 +12,7 @@
     <li> Three.js </li>
     <li> Firebase </li>
 </ul>
+
+<p>The recruiter scheduler is available at <code>/calendar</code>.
+See <a href="docs/scheduler.md">scheduler setup and behavior</a> and
+<a href="docs/scheduler-verification.md">verification results</a>.</p>
